@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Cały element objęty linkiem <a>
                 const truncatedTitle = book.title.length > 15 ? book.title.slice(0, 15) + '...' : book.title;
             bookElement.innerHTML = `
-                <a href="ksiazka.html?id=${book.key}" class="book-link" style="text-decoration: none; color: inherit;">
+                <a href="/ksiazka?id=${book.key}" class="book-link" style="text-decoration: none; color: inherit;">
                     <img src="${coverUrl}" alt="Okładka ${book.title}" class="okladka-ksiazki" style="width: 100%; height: auto; max-height: 200px;" />
                     <h2>${truncatedTitle}</h2>
                     <p>${book.authors && book.authors.length > 0 ? `Autor: ${book.authors[0].name}` : 'Autor nieznany'}</p>

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const szczegolyContainer = document.getElementById('szczegoly');
             const coverUrl = bookData.covers 
                 ? `https://covers.openlibrary.org/b/id/${bookData.covers[0]}-L.jpg`
-                : 'zdj/brak.png';
+                : '/assets/images/brak.png';
 
             const title = bookData.title || 'Tytuł nieznany';
             const author = bookData.authors && bookData.authors.length > 0

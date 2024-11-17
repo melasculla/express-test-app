@@ -15,7 +15,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
         if (response.ok) {
             alert('Użytkownik został zarejestrowany pomyślnie');
             localStorage.setItem('isLoggedIn', 'true');  // Zapis stanu zalogowania
-            window.location.href = 'index.html';          // Przekierowanie do strony głównej
+            window.location.href = '/';          // Przekierowanie do strony głównej
         } else {
             const errorText = await response.text();
             alert(`Błąd: ${errorText}`);
@@ -47,7 +47,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             alert(data.message);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userId', data.userId);  // Poprawnie ustawiony userId
-            window.location.href = 'index.html';
+            window.location.href = '/';
         } else {
             alert('Nieprawidłowa nazwa użytkownika lub hasło');
         }

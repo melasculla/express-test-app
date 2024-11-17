@@ -50,7 +50,7 @@ header>a>img {
    color: #EEEEEE;
    border: 1px solid #eeeeee;
    border-radius: 20px;
-   transition: .3s ease;
+   /* transition: .3s ease; */
    background-color: rgb(49, 54, 63);
 }
 

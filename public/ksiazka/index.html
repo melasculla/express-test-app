@@ -4,19 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Szczegóły książki</title>
-    <link rel="stylesheet" href="../style.css" />
-    <style>
-      #img {
-        width: 320px;
-        height: 500px;
-        object-fit: cover;
-        image-rendering: auto;
-      }
-    </style>
+    <link rel="stylesheet" href="/assets/css/style.css" />
   </head>
   <body>
     <header>
-      <a href="../index.html"><img src="../zdj/logo.png" alt="" /></a>
+      <a href="/"><img src="/assets/images/logo.png" alt="" /></a>
       <div class="custom_input">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,27 +30,19 @@
       </div>
       <section>
         <div id="profileMenu" class="dropdown">
-          <a id="loginLink" href="../rejestracja.html"> Zaloguj się </a>
+          <a id="loginLink" href="/rejestracja"> Zaloguj się </a>
           <div id="dropdownContent" class="dropdown-content">
-            <a href="../profil.html">Profil</a>
+            <a href="/profil">Profil</a>
             <a href="#" id="logoutButton">Wyloguj się</a>
           </div>
         </div>
       </section>
     </header>
-    <section id="szczegoly">
-      <img src="../zdj/table-for-two.png" alt="Okładka książki" id="img" />
-      <h1 style="color: white">Table for Two: Fictions</h1>
-      <p style="color: white">
-        Miliony fanów Amora Towlesa czeka prawdziwa uczta, ponieważ autor dzieli
-        się swoją krótszą twórczością: sześcioma opowiadaniami osadzonymi w
-        Nowym Jorku oraz minipowieścią rozgrywającą się w Hollywood Złotej Ery.
-      </p>
-      <p style="color: white">Autor: Amor Towles</p>
-      <p style="color: white">Data wydania: 17.06.2025</p>
-    </section>
+    <section id="szczegoly"></section>
+    <button id="wypozyczBtn">Wypożycz książkę</button>
 
-    <script src="../login-profil.js"></script>
-    <script src="../wyszukiwanie.js"></script>
+    <script src="/assets/js/wypozyczanie.js"></script>
+    <script src="/assets/js/login-profil.js"></script>
+    <script src="/assets/js/wyszukiwanie.js"></script>
   </body>
 </html>
