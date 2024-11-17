@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         const booksSection = document.querySelector('#polecane-fantasy');
-        booksSection.innerHTML = ''; 
+        booksSection.innerHTML = '';
 
         data.works.forEach(book => {
             const coverId = book.cover_id;
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             bookElement.classList.add('book-item');
 
             // Cały element objęty linkiem <a>
-                const truncatedTitle = book.title.length > 15 ? book.title.slice(0, 15) + '...' : book.title;
+            const truncatedTitle = book.title.length > 15 ? book.title.slice(0, 15) + '...' : book.title;
             bookElement.innerHTML = `
                 <a href="ksiazka.html?id=${book.key}" class="book-link" style="text-decoration: none; color: inherit;">
                     <img src="${coverUrl}" alt="Okładka ${book.title}" class="okladka-ksiazki" style="width: 100%; height: auto; max-height: 200px;" />

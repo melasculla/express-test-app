@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Ustawia katalog 'pub
 
 // Konfiguracja połączenia z bazą danych MySQL
 const db = mysql.createConnection({
-    host: 'db', // Adres bazy danych MySQL
+    host: process.env.MYSQL_HOST || 'localhost', // Adres bazy danych MySQL
     user: 'test', // Nazwa użytkownika MySQL
     password: '123', // Hasło do MySQL (w tym przypadku puste)
     database: 'biblioteka' // Nazwa bazy danych

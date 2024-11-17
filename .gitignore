@@ -3,3 +3,9 @@ node_modules
 /database
 
 .env
+
+DockerFile
+
+docker-compose.yml
+
+nginx.conf
