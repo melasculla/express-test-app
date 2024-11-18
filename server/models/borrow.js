@@ -1,10 +1,9 @@
 import { db } from '../connection.js';
 
-export const userModel = () => {
-   const get = (by, column) => {
+export const borrowModel = () => {
+   const get = (bookId) => {
       return new Promise((resolve, reject) => {
-         const searchColumn = by === 'name' ? 'nazwa' : 'e_mail'
-         db.query(`SELECT * FROM users WHERE ${searchColumn} = ?`, [column], (error, results) => {
+         db.query(`SELECT * FROM wypozyczenia WHERE book_id = ?`, [bookId], (error, results) => {
             if (error) {
                console.error('Database query failed:', error);
                return reject(error);
@@ -15,9 +14,9 @@ export const userModel = () => {
       });
    };
 
-   const create = (user) => {
+   const create = (userId, bookId) => {
       return new Promise((resolve, reject) => {
-         db.query('INSERT INTO users SET ?', user, (error, results) => {
+         db.query('INSERT INTO wypozyczenia (user_id, book_id) VALUES (?, ?)', [userId, bookId], (error, results) => {
             if (error) {
                console.error('Database query failed:', error);
                return reject(error);
@@ -28,7 +27,7 @@ export const userModel = () => {
       });
    };
 
-   const update = (user) => {
+   const update = (book) => {
       return new Promise((resolve, reject) => {
          // db.query('here update query', user, (error, results) => {
          //    if (error) {
@@ -41,7 +40,7 @@ export const userModel = () => {
       });
    };
 
-   const remove = (userId) => {
+   const remove = (bookId) => {
       return new Promise((resolve, reject) => {
          // db.query('here remove query', user, (error, results) => {
          //    if (error) {
