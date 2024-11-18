@@ -1,4 +1,7 @@
 export default async (subject, htmlContainer) => {
+   if (!subject || !htmlContainer)
+      return
+
    try {
       const response = await fetch(`https://openlibrary.org/subjects/${subject}.json?limit=8&sort=rating`);
       const data = await response.json();
