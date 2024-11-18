@@ -7,22 +7,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     wynikiContainer.innerHTML = '';
 
     try {
-        let data;
-        if (subject) {
-            // Zapytanie bez limitu, aby pobrać wszystkie książki z kategorii
-            const response = await fetch(`https://openlibrary.org/subjects/${subject}.json?sort=rating`);
-            data = await response.json();
-            data = data.works;  // w API tematu dane są w `works`
-        } else if (query) {
-            const response = await fetch(`https://openlibrary.org/search.json?title=${query}&sort=rating`);
-            data = await response.json();
-            data = data.docs;  // w API wyszukiwania dane są w `docs`
-        }
+        if (!subject && !query)
+            return
+
+        // Zapytanie bez limitu, aby pobrać wszystkie książki z kategorii
+        const url =
+            (subject && `https://openlibrary.org/subjects/${subject}.json?sort=rating`) ||
+            (query && `https://openlibrary.org/search.json?title=${query}&sort=rating`)
+
+        const response = await fetch(url);
+        data = await response.json();
+        data = subject ? data.works : data.docs;
+        // w API tematu dane są w `works`
+        // w API wyszukiwania dane są w `docs`
 
         if (data && data.length > 0) {
             data.forEach(book => {
                 const coverId = book.cover_id || book.cover_i;
                 const coverUrl = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : '/assets/images/brak.png';
+                const bookId = book.key.includes('/works/') ? book.key.replace('/works/', '') : book.key;
 
                 const rating = book.ratings_average || 0; // domyślnie 0, jeśli brak oceny
                 let ratingImage = '/assets/images/05.png'; // Domyślny obraz oceny
@@ -39,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const bookElement = document.createElement('div');
                 bookElement.innerHTML = `
-                    <a href="/ksiazka?id=${book.key}">
+                    <a href="/ksiazka?id=${bookId}">
                         <img src="${coverUrl}" class="okladka-search" style="min-width:180px; max-width:180px; min-height:271px; max-height:271px;" alt="Okładka książki" />
                         <h2>${book.title}</h2>
                         <p>${book.author_name ? book.author_name.join(', ') : 'Autor nieznany'}</p>

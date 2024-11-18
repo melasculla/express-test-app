@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const bookId = urlParams.get('id');
     const userId = localStorage.getItem('userId');
 
-    const response = await fetch(`https://openlibrary.org${bookId}.json`);
+    const response = await fetch(`https://openlibrary.org/works/${bookId}.json`);
     const book = await response.json();
 
     const szczegolyContainer = document.getElementById('szczegoly');
