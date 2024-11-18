@@ -172,10 +172,10 @@
       document.addEventListener("DOMContentLoaded", async () => {
         // First param is subject
         // Second param is html container
-        fetchBooks("classic", "#polecane-klasyczne");
-        fetchBooks("fantasy", "#polecane-biografie");
-        fetchBooks("biographies", "#polecane-fantasy");
-        fetchBooks("science_fiction", "#polecane-scifi");
+        await fetchBooks("science_fiction", "#polecane-scifi");
+        await fetchBooks("fantasy", "#polecane-biografie");
+        await fetchBooks("classic", "#polecane-klasyczne");
+        await fetchBooks("biographies", "#polecane-fantasy");
       });
     </script>
   </body>
