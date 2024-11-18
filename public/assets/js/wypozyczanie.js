@@ -24,19 +24,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Sprawdzanie statusu wypożyczenia książki
-    const statusResponse = await fetch(`http://localhost:3000/borrow/status?bookId=${bookId}`);
+    const statusResponse = await fetch(`http://localhost:3000/api/borrow/status/${bookId}`);
     const statusData = await statusResponse.json();
-    
+
     if (statusData.borrowed) {
         wypozyczBtn.textContent = 'Książka jest wypożyczona';
         wypozyczBtn.disabled = true;
     } else {
         wypozyczBtn.addEventListener('click', async () => {
             try {
-                const borrowResponse = await fetch('http://localhost:3000/borrow', {
+                const borrowResponse = await fetch(`http://localhost:3000/api/borrow/${bookId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, bookId })
+                    body: JSON.stringify({ userId })
                 });
 
                 if (borrowResponse.ok) {
