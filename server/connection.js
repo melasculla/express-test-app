@@ -1,4 +1,4 @@
-import mysql from 'mysql'
+import mysql from 'mysql';
 
 export const db = mysql.createConnection({
    host: process.env.MYSQL_HOST || 'localhost', // Adres bazy danych MySQL

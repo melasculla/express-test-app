@@ -1,28 +1,46 @@
 import bcrypt from 'bcrypt'; // Służy do bezpiecznego hashowania haseł
 import { userModel } from '../models/user.js';
 
-export const login = async () => {
-
-}
-
 export const register = async (req, res) => {
-   // const userId = +req.params.userId;
-   const { username, email, password } = req.body;
+   const body = req.body;
 
-   if (!username || !email || !password)
-      throw res.status(400).send('Bad Request');
+   if (!body.username || !body.email || !body.password)
+      return res.status(400).send('Bad Request');
 
    try {
-      const user = await userModel().get(email);
-      // 'Użytkownik z podanym adresem e-mail lub nazwą już istnieje'
-      return user ?? res.status(404).send('User Not Found');
+      const user = await userModel().get('name', body.username); // 'Użytkownik z podanym adresem e-mail lub nazwą już istnieje'
+      if (user)
+         return res.status(409).send('User Already Exists');
    } catch (err) {
-      throw res.status(500).send(err.message);
-      // 'Użytkownik z podanym adresem e-mail lub nazwą już istnieje'
+      console.error(err);
+      return res.status(500).send(err.message); // 'Użytkownik z podanym adresem e-mail lub nazwą już istnieje'
+   }
+
+   const isPasswordValid = validatePassword(body.password)
+   if (!isPasswordValid)
+      return res.status(400).send('Hasło musi mieć co najmniej 8 znaków, zawierać wielką i małą literę oraz cyfrę');
+
+   let hashedPassword;
+   try {
+      hashedPassword = await bcrypt.hash(body.password, 10); // Hashuje hasło dla bezpieczeństwa, używając algorytmu bcrypt  
+   } catch (err) {
+      console.error(`[BCRYPT ERROR]: ${err}`);
+      return res.status(500).send(`[BCRYPT ERROR]: ${err.message}`);
+   }
+
+   try {
+      const result = await userModel().create({
+         nazwa: body.username,
+         e_mail: body.email,
+         haslo: hashedPassword,
+         wypozyczenia: 0
+      });
+      return res.status(200).json(result)
+   } catch (err) {
+      console.error(err);
+      return res.status(500).send(err.message);
    }
 }
-
-
 // Funkcja walidująca hasło użytkownika według określonych zasad bezpieczeństwa
 function validatePassword(password) {
    const minLength = 8; // Wymaga co najmniej 8 znaków
@@ -34,65 +52,30 @@ function validatePassword(password) {
 }
 
 
-// // Endpoint do rejestracji nowego użytkownika
-// app.post('/register', async (req, res) => {
-//    const { username, email, password } = req.body; // Pobiera dane z ciała żądania (JSON)
+export const login = async (req, res) => {
+   const body = req.body;
 
-//    // Sprawdza, czy podany e-mail lub nazwa użytkownika już istnieją w bazie danych
-//    db.query('SELECT * FROM users WHERE e_mail = ? OR nazwa = ?', [email, username], async (err, results) => {
-//        if (err) {
-//            console.error('Błąd zapytania:', err);
-//            return res.status(500).send('Błąd serwera'); // Zwraca błąd serwera przy problemie z zapytaniem
-//        }
+   if (!body.username || !body.password)
+      return res.status(400).send('Bad Request');
 
-//        if (results.length > 0) { // Jeśli istnieje użytkownik o tej nazwie lub e-mailu
-//            return res.status(400).send('Użytkownik z podanym adresem e-mail lub nazwą już istnieje');
-//        }
+   let user;
+   try {
+      user = await userModel().get('name', body.username);
+      if (!user)
+         return res.status(404).send('User Not Found');
+   } catch (err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+   }
 
-//        // Waliduje hasło według wymagań bezpieczeństwa
-//        if (!validatePassword(password)) {
-//            return res.status(400).send('Hasło musi mieć co najmniej 8 znaków, zawierać wielką i małą literę oraz cyfrę');
-//        }
+   try {
+      const isPasswordCorrect = await bcrypt.compare(body.password, user.haslo);
+      if (!isPasswordCorrect)
+         return res.status(401).send('Wrong Password');
+   } catch (err) {
+      console.error(`[BCRYPT ERROR]: ${err}`);
+      return res.status(500).send(`[BCRYPT ERROR]: ${err.message}`);
+   }
 
-//        try {
-//            const hashedPassword = await bcrypt.hash(password, 10); // Hashuje hasło dla bezpieczeństwa, używając algorytmu bcrypt
-
-//            const user = { nazwa: username, e_mail: email, haslo: hashedPassword, wypozyczenia: 0 }; // Przygotowuje nowego użytkownika do zapisania w bazie
-//            db.query('INSERT INTO users SET ?', user, (err, results) => {
-//                if (err) {
-//                    console.error('Błąd podczas dodawania użytkownika:', err);
-//                    return res.status(500).send('Błąd serwera');
-//                }
-//                res.send('Użytkownik został zarejestrowany pomyślnie'); // Wysyła potwierdzenie udanej rejestracji
-//            });
-//        } catch (error) {
-//            console.error('Błąd podczas hashowania hasła:', error);
-//            res.status(500).send('Błąd serwera');
-//        }
-//    });
-// });
-
-// // Endpoint do logowania użytkownika
-// app.post('/login', (req, res) => {
-//    const { username, password } = req.body; // Pobiera dane logowania z żądania
-
-//    db.query('SELECT * FROM users WHERE nazwa = ?', [username], async (err, results) => { // Szuka użytkownika o danej nazwie
-//        if (err) {
-//            console.error('Błąd podczas logowania:', err);
-//            return res.status(500).send('Błąd serwera');
-//        }
-
-//        if (results.length > 0) { // Jeśli użytkownik istnieje
-//            const user = results[0];
-//            const isPasswordCorrect = await bcrypt.compare(password, user.haslo); // Porównuje hasło z zaszyfrowaną wersją w bazie
-
-//            if (isPasswordCorrect) {
-//                res.json({ message: 'Zalogowano pomyślnie', userId: user.id }); // Sukces logowania
-//            } else {
-//                res.status(401).send('Nieprawidłowa nazwa użytkownika lub hasło'); // Błąd, gdy hasło jest niepoprawne
-//            }
-//        } else {
-//            res.status(401).send('Nieprawidłowa nazwa użytkownika lub hasło'); // Błąd, gdy użytkownik nie istnieje
-//        }
-//    });
-// });
+   return res.status(200).json({ message: 'Zalogowano pomyślnie', userId: user.id });
+}

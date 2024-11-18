@@ -2,7 +2,7 @@
 import express from 'express'; // Importuje Express - framework do tworzenia serwera HTTP
 import bodyParser from 'body-parser'; // Umożliwia przetwarzanie treści JSON i URL-encoded w żądaniach
 import cors from 'cors'; // Umożliwia CORS (Cross-Origin Resource Sharing), by API było dostępne z innych domen
-// Routes
+// Import Routes
 import authRoutes from './routes/auth.js';
 
 // Tworzenie instancji aplikacji Express
@@ -14,8 +14,10 @@ app.use(cors()); // Włącza CORS dla wszystkich żądań HTTP, aby API było do
 app.use(express.urlencoded({ extended: true })); // Przetwarza żądania z treścią typu application/x-www-form-urlencoded
 // app.use(express.static(path.join(__dirname, 'public'))); // Ustawia katalog 'public' jako publiczny, aby serwować statyczne pliki (np. CSS, JS)
 
-
+// Auth Route
 app.use('/api/auth', authRoutes);
+
+// TODO: refactor borrow endpoints
 
 // Endpoint do wypożyczania książki
 app.post('/borrow', (req, res) => {
