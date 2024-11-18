@@ -165,10 +165,18 @@
 
     <script src="/assets/js/login-profil.js"></script>
     <script src="/assets/js/wyszukiwanie.js"></script>
-    <script src="/assets/js/scifi.js"></script>
-    <script src="/assets/js/fantasy.js"></script>
-    <script src="/assets/js/klasyczne.js"></script>
-    <script src="/assets/js/biografie.js"></script>
     <script src="/assets/js/przycisk.js"></script>
+    <script type="module">
+      import fetchBooks from "./assets/js/fetchBooks.js";
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        // First param is subject
+        // Second param is html container
+        fetchBooks("classic", "#polecane-klasyczne");
+        fetchBooks("fantasy", "#polecane-biografie");
+        fetchBooks("biographies", "#polecane-fantasy");
+        fetchBooks("science_fiction", "#polecane-scifi");
+      });
+    </script>
   </body>
 </html>
