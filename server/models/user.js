@@ -3,8 +3,13 @@ import { db } from '../connection.js';
 export const userModel = () => {
    const get = (by, column) => {
       return new Promise((resolve, reject) => {
-         const searchColumn = by === 'name' ? 'nazwa' : 'e_mail'
-         db.query(`SELECT * FROM users WHERE ${searchColumn} = ?`, [column], (error, results) => {
+         const searchColumns = {
+            name: 'nazwa',
+            email: 'e_mail',
+            id: 'id',
+         }
+
+         db.query(`SELECT * FROM users WHERE ${searchColumns[by] ?? 'id'} = ?`, [column], (error, results) => {
             if (error) {
                console.error('Database query failed:', error);
                return reject(error);

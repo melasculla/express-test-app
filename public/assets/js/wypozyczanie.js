@@ -8,11 +8,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const szczegolyContainer = document.getElementById('szczegoly');
     const coverUrl = `https://covers.openlibrary.org/b/id/${book.covers ? book.covers[0] : 'placeholder'}-L.jpg`;
+    let description = 'Brak opisu';
+    if (book.description) {
+        typeof book.description === 'string' ?
+            description = book.description :
+            description = book.description.value
+    }
 
     szczegolyContainer.innerHTML = `
         <img src="${coverUrl}" alt="Okładka książki" />
         <h1>${book.title}</h1>
-        <p>${book.description ? book.description : 'Brak opisu'}</p>
+        <p>${description}</p>
         <p>Autor: ${book.authors ? book.authors.map(a => a.name).join(', ') : 'Nieznany'}</p>
     `;
 
@@ -42,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (borrowResponse.ok) {
                     wypozyczBtn.textContent = 'Książka jest wypożyczona';
                     wypozyczBtn.disabled = true;
+                    alert('Książka jest wypożyczona');
                 } else {
                     const errorText = await borrowResponse.text();
                     alert(`Błąd: ${errorText}`);

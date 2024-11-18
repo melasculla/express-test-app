@@ -4,17 +4,17 @@ import { borrowModel } from '../models/borrow.js';
 // Endpoint do wypożyczania książki
 export const borrow = async (req, res) => {
    // You should get user info from auth cookie (like JWT) or just cookie, not the body
-   const userName = req.body.userName;
+   const userId = req.body.userId;
    const bookId = req.params.id;
    // Also you need remove works from book ID in database
    // Its better to validate ID but for demo thats fine
 
-   if (!userName || !bookId)
+   if (!userId || !bookId)
       return res.status(400).send('Bad Request');
 
    let user;
    try {
-      user = await userModel().get('name', userName);
+      user = await userModel().get('id', userId);
       if (!user)
          return res.status(404).send('User Not Found');
    } catch (err) {

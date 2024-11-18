@@ -14,7 +14,9 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
 
         if (response.ok) {
             alert('Użytkownik został zarejestrowany pomyślnie');
+            const data = await response.json();  // Przetwarzanie odpowiedzi JSON
             localStorage.setItem('isLoggedIn', 'true');  // Zapis stanu zalogowania
+            localStorage.setItem('userId', data.id);  // Poprawnie ustawiony userId
             window.location.href = '/';          // Przekierowanie do strony głównej
         } else {
             const errorText = await response.text();
