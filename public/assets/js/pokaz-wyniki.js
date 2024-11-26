@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Zapytanie bez limitu, aby pobrać wszystkie książki z kategorii
         const url =
-            (subject && `https://openlibrary.org/subjects/${subject}.json?sort=rating`) ||
-            (query && `https://openlibrary.org/search.json?title=${query}&sort=rating`)
+        (subject && `https://openlibrary.org/subjects/${subject}.json?sort=rating&limit=32`) ||
+        (query && `https://openlibrary.org/search.json?title=${query}&sort=rating&limit=32`)    
 
         const response = await fetch(url);
         data = await response.json();
